@@ -31,6 +31,7 @@ namespace CR34
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CR34));
             this.border = new System.Windows.Forms.Panel();
+            this.button2 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.button_reduce = new System.Windows.Forms.Button();
             this.button_close = new System.Windows.Forms.Button();
@@ -42,7 +43,8 @@ namespace CR34
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.logs = new System.Windows.Forms.RichTextBox();
-            this.button2 = new System.Windows.Forms.Button();
+            this.current_progress_bar = new Bunifu.UI.WinForms.BunifuProgressBar();
+            this.current_progress = new System.Windows.Forms.Label();
             this.border.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pages)).BeginInit();
@@ -65,6 +67,25 @@ namespace CR34
             this.border.MouseMove += new System.Windows.Forms.MouseEventHandler(this.border_MouseMove);
             this.border.MouseUp += new System.Windows.Forms.MouseEventHandler(this.border_MouseUp);
             // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(26)))), ((int)(((byte)(29)))));
+            this.button2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button2.BackgroundImage")));
+            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button2.Dock = System.Windows.Forms.DockStyle.Right;
+            this.button2.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(26)))), ((int)(((byte)(29)))));
+            this.button2.FlatAppearance.BorderSize = 0;
+            this.button2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(26)))), ((int)(((byte)(29)))));
+            this.button2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(26)))), ((int)(((byte)(29)))));
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.ForeColor = System.Drawing.Color.Transparent;
+            this.button2.Location = new System.Drawing.Point(299, 0);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(25, 25);
+            this.button2.TabIndex = 4;
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -73,7 +94,7 @@ namespace CR34
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(37, 13);
             this.label1.TabIndex = 2;
-            this.label1.Text = "v1.0.0";
+            this.label1.Text = "v1.1.0";
             // 
             // button_reduce
             // 
@@ -127,9 +148,9 @@ namespace CR34
             // 
             this.tag.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(229)))), ((int)(((byte)(163)))));
             this.tag.ForeColor = System.Drawing.Color.White;
-            this.tag.Location = new System.Drawing.Point(61, 19);
+            this.tag.Location = new System.Drawing.Point(92, 19);
             this.tag.Name = "tag";
-            this.tag.Size = new System.Drawing.Size(283, 20);
+            this.tag.Size = new System.Drawing.Size(252, 20);
             this.tag.TabIndex = 4;
             // 
             // label2
@@ -145,14 +166,14 @@ namespace CR34
             // 
             this.pages.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(229)))), ((int)(((byte)(163)))));
             this.pages.ForeColor = System.Drawing.Color.White;
-            this.pages.Location = new System.Drawing.Point(62, 45);
+            this.pages.Location = new System.Drawing.Point(92, 45);
             this.pages.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
             this.pages.Name = "pages";
-            this.pages.Size = new System.Drawing.Size(282, 20);
+            this.pages.Size = new System.Drawing.Size(252, 20);
             this.pages.TabIndex = 6;
             this.pages.Value = new decimal(new int[] {
             1,
@@ -181,9 +202,9 @@ namespace CR34
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.tag);
             this.groupBox1.ForeColor = System.Drawing.Color.White;
-            this.groupBox1.Location = new System.Drawing.Point(12, 266);
+            this.groupBox1.Location = new System.Drawing.Point(12, 247);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(350, 103);
+            this.groupBox1.Size = new System.Drawing.Size(350, 107);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = " Search ";
@@ -191,7 +212,7 @@ namespace CR34
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 52);
+            this.label3.Location = new System.Drawing.Point(6, 47);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(40, 13);
             this.label3.TabIndex = 8;
@@ -200,31 +221,47 @@ namespace CR34
             // logs
             // 
             this.logs.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(229)))), ((int)(((byte)(163)))));
-            this.logs.Location = new System.Drawing.Point(12, 375);
+            this.logs.Location = new System.Drawing.Point(12, 360);
             this.logs.Name = "logs";
             this.logs.ReadOnly = true;
-            this.logs.Size = new System.Drawing.Size(350, 124);
+            this.logs.Size = new System.Drawing.Size(350, 120);
             this.logs.TabIndex = 9;
             this.logs.Text = "";
             // 
-            // button2
+            // current_progress_bar
             // 
-            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(26)))), ((int)(((byte)(29)))));
-            this.button2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button2.BackgroundImage")));
-            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.button2.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(26)))), ((int)(((byte)(29)))));
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(26)))), ((int)(((byte)(29)))));
-            this.button2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(26)))), ((int)(((byte)(29)))));
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.ForeColor = System.Drawing.Color.Transparent;
-            this.button2.Location = new System.Drawing.Point(299, 0);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(25, 25);
-            this.button2.TabIndex = 4;
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.current_progress_bar.AllowAnimations = false;
+            this.current_progress_bar.Animation = 0;
+            this.current_progress_bar.AnimationSpeed = 220;
+            this.current_progress_bar.AnimationStep = 10;
+            this.current_progress_bar.BackColor = System.Drawing.Color.Transparent;
+            this.current_progress_bar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("current_progress_bar.BackgroundImage")));
+            this.current_progress_bar.BorderColor = System.Drawing.Color.White;
+            this.current_progress_bar.BorderRadius = 9;
+            this.current_progress_bar.BorderThickness = 1;
+            this.current_progress_bar.Location = new System.Drawing.Point(12, 486);
+            this.current_progress_bar.Maximum = 100;
+            this.current_progress_bar.MaximumValue = 100;
+            this.current_progress_bar.Minimum = 0;
+            this.current_progress_bar.MinimumValue = 0;
+            this.current_progress_bar.Name = "current_progress_bar";
+            this.current_progress_bar.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.current_progress_bar.ProgressBackColor = System.Drawing.Color.Transparent;
+            this.current_progress_bar.ProgressColorLeft = System.Drawing.Color.DeepSkyBlue;
+            this.current_progress_bar.ProgressColorRight = System.Drawing.Color.Aquamarine;
+            this.current_progress_bar.Size = new System.Drawing.Size(306, 13);
+            this.current_progress_bar.TabIndex = 12;
+            this.current_progress_bar.Value = 0;
+            this.current_progress_bar.ValueByTransition = 0;
+            // 
+            // current_progress
+            // 
+            this.current_progress.BackColor = System.Drawing.Color.Transparent;
+            this.current_progress.ForeColor = System.Drawing.Color.White;
+            this.current_progress.Location = new System.Drawing.Point(324, 483);
+            this.current_progress.Name = "current_progress";
+            this.current_progress.Size = new System.Drawing.Size(38, 16);
+            this.current_progress.TabIndex = 13;
             // 
             // CR34
             // 
@@ -232,6 +269,8 @@ namespace CR34
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(229)))), ((int)(((byte)(163)))));
             this.ClientSize = new System.Drawing.Size(374, 511);
+            this.Controls.Add(this.current_progress);
+            this.Controls.Add(this.current_progress_bar);
             this.Controls.Add(this.logs);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.pictureBox1);
@@ -267,6 +306,8 @@ namespace CR34
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.RichTextBox logs;
         private System.Windows.Forms.Button button2;
+        private Bunifu.UI.WinForms.BunifuProgressBar current_progress_bar;
+        private System.Windows.Forms.Label current_progress;
     }
 }
 

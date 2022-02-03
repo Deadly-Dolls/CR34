@@ -13,6 +13,7 @@ using ComponentFactory.Krypton.Toolkit;
 using System.Xml;
 using RestSharp;
 using System.Net;
+using System.Threading;
 
 namespace CR34
 {
@@ -23,6 +24,8 @@ namespace CR34
 
         private BackgroundWorker worker = new BackgroundWorker();
         private string url = $"https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&tags=";
+
+        Thread download_thread = null;
 
         public CR34()
         {
@@ -37,6 +40,11 @@ namespace CR34
 
         private void button_close_Click(object sender, EventArgs e)
         {
+            if (worker.IsBusy == true)
+                worker.CancelAsync();
+            if (download_thread != null)
+                if (download_thread.IsAlive == true)
+                    download_thread.Join();
             Close();
         }
 
@@ -56,12 +64,15 @@ namespace CR34
             pages.Enabled = false;
             tag.Enabled = false;
 
-            worker.RunWorkerAsync();
-            while (worker.IsBusy)
+            if (tag.Text.Length >= 1)
             {
-                Application.DoEvents();
+                worker.RunWorkerAsync();
+                while (worker.IsBusy == true || download_thread.IsAlive == true)
+                {
+                    Application.DoEvents();
+                }
             }
-
+            
             button1.Enabled = true;
             pages.Enabled = true;
             tag.Enabled = true;
@@ -69,7 +80,7 @@ namespace CR34
 
         private async Task<string> cleanner(string downloads, string data)
         {
-            return ($"{downloads}\\{data.Replace(" ", "_")}");
+            return ($"{downloads}\\{data.ToLower().Replace(" ", "_")}");
         }
 
         private async void download(object sender, EventArgs e)
@@ -94,26 +105,61 @@ namespace CR34
             for (int pid = 0; pid < pages_number; pid++)
             {
                 full_url = $"{url}{tag.Text}+&pid={pid * aligner}";
-                await update_logs(full_url);
                 result = client.DownloadString(full_url);
                 post.LoadXml(result);
                 node = post.SelectNodes("posts");
+                download_thread = new Thread(() => downloader(address, node, output_path, output_name));
+                download_thread.Start();
+                client.Dispose();
+            }
+        }
 
-                for (int i = 0; i < node.Count; i++)
+        private async void downloader(string address, XmlNodeList node, string output_path, string output_name)
+        {
+            WebClient client = new WebClient();
+
+            for (int i = 0; i < node.Count; i++)
+            {
+                for (int child = 0; child < node[i].ChildNodes.Count; child++)
                 {
-                    for (int child = 0; child < node[i].ChildNodes.Count; child++)
+                    address = node[i].ChildNodes[child].Attributes[i].OwnerElement.GetAttribute("file_url");
+                    output_name = address.Split('/')[5];
+                    if (File.Exists($"{output_path}\\{output_name}") == false)
                     {
-                        address = node[i].ChildNodes[child].Attributes[i].OwnerElement.GetAttribute("file_url");
-                        output_name = address.Split('/')[5];
-                        if (File.Exists($"{output_path}\\{output_name}") == false)
-                        {
-                            await update_logs(output_name);
-                            client.DownloadFile(address, $"{output_path}\\{output_name}");
-                        }
+                        await update_logs(output_name);
+                        client = new WebClient();
+                        client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(progress_callback);
+                        client.DownloadFileCompleted += new AsyncCompletedEventHandler(progress_file_completed);
+                        client.DownloadFileAsync(new Uri(address), $"{output_path}\\{output_name}");
                     }
                 }
             }
         }
+
+        private async void progress_callback(object sender, DownloadProgressChangedEventArgs e)
+        {
+            await update_progress(e.ProgressPercentage);
+        }
+
+        private async void progress_file_completed(object sender, AsyncCompletedEventArgs e)
+        {
+            await update_progress(100);
+        }
+
+        private async Task<Task> update_progress(int percent)
+        {
+            current_progress_bar.Invoke(new MethodInvoker(delegate
+            {
+                current_progress_bar.Value = percent;
+            }));
+            current_progress.Invoke(new MethodInvoker(delegate
+            {
+                current_progress.Text = $"{percent} %";
+            }));
+
+            return (Task.CompletedTask);
+        }
+
 
         private async Task<Task> update_logs(string data)
         {
