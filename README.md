@@ -1,12 +1,20 @@
 # CR34
 🫀 Client for Rule 34 Download
 
-<div style="text-align: center">
-  <img src="https://raw.githubusercontent.com/Deadly-Dolls/CR34/main/img/LOGO.png"/>
-</div>
+<p align = "center">
+  <a>
+    <img src="https://raw.githubusercontent.com/Deadly-Dolls/CR34/main/img/LOGO.png"/>
+  </a>
+</p>
 
-<div style="text-align: center">
-  <img src="https://raw.githubusercontent.com/Deadly-Dolls/CR34/main/img/GUI.png"/>
-  <img src="https://raw.githubusercontent.com/Deadly-Dolls/CR34/main/img/RUNNING.png"/>
-  <img src="https://raw.githubusercontent.com/Deadly-Dolls/CR34/main/img/OUTPUT.png"/>
-</div>
+<p align = "center">
+  <a>
+    <img src="https://raw.githubusercontent.com/Deadly-Dolls/CR34/main/img/GUI.png"/>
+  </a>
+  <a>
+    <img src="https://raw.githubusercontent.com/Deadly-Dolls/CR34/main/img/RUNNING.png"/>
+  </a>
+  <a>
+    <img src="https://raw.githubusercontent.com/Deadly-Dolls/CR34/main/img/OUTPUT.png"/>
+  </a>
+</p>
